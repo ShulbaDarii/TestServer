@@ -58,7 +58,6 @@ namespace TestServer
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.dataGridView4 = new System.Windows.Forms.DataGridView();
             this.addUserToGroup = new System.Windows.Forms.Button();
-            this.removeUserByGroup = new System.Windows.Forms.Button();
             this.showUserGroupBox = new System.Windows.Forms.GroupBox();
             this.dataGridView5 = new System.Windows.Forms.DataGridView();
             this.updateUserGroupBox = new System.Windows.Forms.GroupBox();
@@ -96,6 +95,8 @@ namespace TestServer
             this.dataGridView9 = new System.Windows.Forms.DataGridView();
             this.dataGridView10 = new System.Windows.Forms.DataGridView();
             this.label = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.showGroupGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -176,61 +177,70 @@ namespace TestServer
             this.updateGroupToolStripMenuItem.Name = "updateGroupToolStripMenuItem";
             this.updateGroupToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.updateGroupToolStripMenuItem.Text = "Update";
+            this.updateGroupToolStripMenuItem.Click += new System.EventHandler(this.updateGroupToolStripMenuItem_Click);
             // 
             // userInGroupToolStripMenuItem
             // 
             this.userInGroupToolStripMenuItem.Name = "userInGroupToolStripMenuItem";
             this.userInGroupToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.userInGroupToolStripMenuItem.Text = "Add user in group";
+            this.userInGroupToolStripMenuItem.Click += new System.EventHandler(this.userInGroupToolStripMenuItem_Click);
             // 
             // showUserGroupToolStripMenuItem
             // 
             this.showUserGroupToolStripMenuItem.Name = "showUserGroupToolStripMenuItem";
             this.showUserGroupToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.showUserGroupToolStripMenuItem.Text = "Show user group";
+            this.showUserGroupToolStripMenuItem.Click += new System.EventHandler(this.showUserGroupToolStripMenuItem_Click);
             // 
             // showUserToolStripMenuItem
             // 
             this.showUserToolStripMenuItem.Name = "showUserToolStripMenuItem";
             this.showUserToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.showUserToolStripMenuItem.Text = "Show";
+            this.showUserToolStripMenuItem.Click += new System.EventHandler(this.showUserToolStripMenuItem_Click);
             // 
             // updateUserToolStripMenuItem
             // 
             this.updateUserToolStripMenuItem.Name = "updateUserToolStripMenuItem";
             this.updateUserToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.updateUserToolStripMenuItem.Text = "Update";
+            this.updateUserToolStripMenuItem.Click += new System.EventHandler(this.updateUserToolStripMenuItem_Click);
             // 
             // showTestToolStripMenuItem
             // 
             this.showTestToolStripMenuItem.Name = "showTestToolStripMenuItem";
             this.showTestToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.showTestToolStripMenuItem.Text = "Show";
+            this.showTestToolStripMenuItem.Click += new System.EventHandler(this.showTestToolStripMenuItem_Click);
             // 
             // loadTestToolStripMenuItem
             // 
             this.loadTestToolStripMenuItem.Name = "loadTestToolStripMenuItem";
             this.loadTestToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.loadTestToolStripMenuItem.Text = "Load test";
+            this.loadTestToolStripMenuItem.Click += new System.EventHandler(this.loadTestToolStripMenuItem_Click);
             // 
             // asignesTestToolStripMenuItem
             // 
             this.asignesTestToolStripMenuItem.Name = "asignesTestToolStripMenuItem";
             this.asignesTestToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.asignesTestToolStripMenuItem.Text = "Asignes test";
+            this.asignesTestToolStripMenuItem.Click += new System.EventHandler(this.asignesTestToolStripMenuItem_Click);
             // 
             // showTestOfGroupToolStripMenuItem
             // 
             this.showTestOfGroupToolStripMenuItem.Name = "showTestOfGroupToolStripMenuItem";
             this.showTestOfGroupToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.showTestOfGroupToolStripMenuItem.Text = "Show test of group";
+            this.showTestOfGroupToolStripMenuItem.Click += new System.EventHandler(this.showTestOfGroupToolStripMenuItem_Click);
             // 
             // showGroupGroupBox
             // 
             this.showGroupGroupBox.Controls.Add(this.dataGridView1);
-            this.showGroupGroupBox.Location = new System.Drawing.Point(12, 27);
+            this.showGroupGroupBox.Location = new System.Drawing.Point(12, 371);
             this.showGroupGroupBox.Name = "showGroupGroupBox";
-            this.showGroupGroupBox.Size = new System.Drawing.Size(52, 312);
+            this.showGroupGroupBox.Size = new System.Drawing.Size(53, 312);
             this.showGroupGroupBox.TabIndex = 1;
             this.showGroupGroupBox.TabStop = false;
             this.showGroupGroupBox.Text = "Group";
@@ -250,9 +260,9 @@ namespace TestServer
             this.updateGroupGroupBox.Controls.Add(this.addGroupbButton);
             this.updateGroupGroupBox.Controls.Add(this.textBox1);
             this.updateGroupGroupBox.Controls.Add(this.dataGridView2);
-            this.updateGroupGroupBox.Location = new System.Drawing.Point(70, 27);
+            this.updateGroupGroupBox.Location = new System.Drawing.Point(71, 380);
             this.updateGroupGroupBox.Name = "updateGroupGroupBox";
-            this.updateGroupGroupBox.Size = new System.Drawing.Size(69, 312);
+            this.updateGroupGroupBox.Size = new System.Drawing.Size(63, 312);
             this.updateGroupGroupBox.TabIndex = 2;
             this.updateGroupGroupBox.TabStop = false;
             this.updateGroupGroupBox.Text = "Update group";
@@ -280,6 +290,7 @@ namespace TestServer
             this.addGroupbButton.TabIndex = 2;
             this.addGroupbButton.Text = "add";
             this.addGroupbButton.UseVisualStyleBackColor = true;
+            this.addGroupbButton.Click += new System.EventHandler(this.addGroupbButton_Click);
             // 
             // label1
             // 
@@ -298,14 +309,15 @@ namespace TestServer
             this.removeGroupButton.TabIndex = 4;
             this.removeGroupButton.Text = "remove";
             this.removeGroupButton.UseVisualStyleBackColor = true;
+            this.removeGroupButton.Click += new System.EventHandler(this.removeGroupButton_Click);
             // 
             // userByGruopGroupBox
             // 
             this.userByGruopGroupBox.Controls.Add(this.comboBox1);
             this.userByGruopGroupBox.Controls.Add(this.dataGridView3);
-            this.userByGruopGroupBox.Location = new System.Drawing.Point(145, 27);
+            this.userByGruopGroupBox.Location = new System.Drawing.Point(240, 387);
             this.userByGruopGroupBox.Name = "userByGruopGroupBox";
-            this.userByGruopGroupBox.Size = new System.Drawing.Size(40, 312);
+            this.userByGruopGroupBox.Size = new System.Drawing.Size(53, 312);
             this.userByGruopGroupBox.TabIndex = 2;
             this.userByGruopGroupBox.TabStop = false;
             this.userByGruopGroupBox.Text = "Users";
@@ -325,16 +337,16 @@ namespace TestServer
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(545, 21);
             this.comboBox1.TabIndex = 1;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // addUserGroupgroupBox
             // 
-            this.addUserGroupgroupBox.Controls.Add(this.removeUserByGroup);
             this.addUserGroupgroupBox.Controls.Add(this.addUserToGroup);
             this.addUserGroupgroupBox.Controls.Add(this.comboBox2);
             this.addUserGroupgroupBox.Controls.Add(this.dataGridView4);
-            this.addUserGroupgroupBox.Location = new System.Drawing.Point(109, 359);
+            this.addUserGroupgroupBox.Location = new System.Drawing.Point(163, 385);
             this.addUserGroupgroupBox.Name = "addUserGroupgroupBox";
-            this.addUserGroupgroupBox.Size = new System.Drawing.Size(87, 312);
+            this.addUserGroupgroupBox.Size = new System.Drawing.Size(59, 307);
             this.addUserGroupgroupBox.TabIndex = 3;
             this.addUserGroupgroupBox.TabStop = false;
             this.addUserGroupgroupBox.Text = "Users";
@@ -363,22 +375,14 @@ namespace TestServer
             this.addUserToGroup.TabIndex = 2;
             this.addUserToGroup.Text = "add";
             this.addUserToGroup.UseVisualStyleBackColor = true;
-            // 
-            // removeUserByGroup
-            // 
-            this.removeUserByGroup.Location = new System.Drawing.Point(88, 280);
-            this.removeUserByGroup.Name = "removeUserByGroup";
-            this.removeUserByGroup.Size = new System.Drawing.Size(75, 23);
-            this.removeUserByGroup.TabIndex = 3;
-            this.removeUserByGroup.Text = "remove";
-            this.removeUserByGroup.UseVisualStyleBackColor = true;
+            this.addUserToGroup.Click += new System.EventHandler(this.addUserToGroup_Click);
             // 
             // showUserGroupBox
             // 
             this.showUserGroupBox.Controls.Add(this.dataGridView5);
-            this.showUserGroupBox.Location = new System.Drawing.Point(197, 27);
+            this.showUserGroupBox.Location = new System.Drawing.Point(342, 381);
             this.showUserGroupBox.Name = "showUserGroupBox";
-            this.showUserGroupBox.Size = new System.Drawing.Size(52, 312);
+            this.showUserGroupBox.Size = new System.Drawing.Size(57, 312);
             this.showUserGroupBox.TabIndex = 2;
             this.showUserGroupBox.TabStop = false;
             this.showUserGroupBox.Text = "Users";
@@ -393,11 +397,12 @@ namespace TestServer
             // 
             // updateUserGroupBox
             // 
+            this.updateUserGroupBox.Controls.Add(this.button1);
             this.updateUserGroupBox.Controls.Add(this.uerFormGroupBox);
             this.updateUserGroupBox.Controls.Add(this.dataGridView6);
-            this.updateUserGroupBox.Location = new System.Drawing.Point(265, 359);
+            this.updateUserGroupBox.Location = new System.Drawing.Point(423, 380);
             this.updateUserGroupBox.Name = "updateUserGroupBox";
-            this.updateUserGroupBox.Size = new System.Drawing.Size(120, 312);
+            this.updateUserGroupBox.Size = new System.Drawing.Size(62, 312);
             this.updateUserGroupBox.TabIndex = 3;
             this.updateUserGroupBox.TabStop = false;
             this.updateUserGroupBox.Text = "Update users";
@@ -409,6 +414,8 @@ namespace TestServer
             this.dataGridView6.Name = "dataGridView6";
             this.dataGridView6.Size = new System.Drawing.Size(347, 287);
             this.dataGridView6.TabIndex = 0;
+            this.dataGridView6.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView6_CellContentClick);
+            this.dataGridView6.SelectionChanged += new System.EventHandler(this.dataGridView6_SelectionChanged);
             // 
             // uerFormGroupBox
             // 
@@ -426,7 +433,7 @@ namespace TestServer
             this.uerFormGroupBox.Controls.Add(this.label2);
             this.uerFormGroupBox.Location = new System.Drawing.Point(361, 19);
             this.uerFormGroupBox.Name = "uerFormGroupBox";
-            this.uerFormGroupBox.Size = new System.Drawing.Size(200, 281);
+            this.uerFormGroupBox.Size = new System.Drawing.Size(200, 253);
             this.uerFormGroupBox.TabIndex = 1;
             this.uerFormGroupBox.TabStop = false;
             this.uerFormGroupBox.Text = "User info";
@@ -513,6 +520,7 @@ namespace TestServer
             this.addUserButton.TabIndex = 9;
             this.addUserButton.Text = "Add";
             this.addUserButton.UseVisualStyleBackColor = true;
+            this.addUserButton.Click += new System.EventHandler(this.addUserButton_Click);
             // 
             // updateUserButton2
             // 
@@ -522,6 +530,7 @@ namespace TestServer
             this.updateUserButton2.TabIndex = 10;
             this.updateUserButton2.Text = "Update";
             this.updateUserButton2.UseVisualStyleBackColor = true;
+            this.updateUserButton2.Click += new System.EventHandler(this.updateUserButton2_Click);
             // 
             // clearUserFormButton
             // 
@@ -531,13 +540,14 @@ namespace TestServer
             this.clearUserFormButton.TabIndex = 11;
             this.clearUserFormButton.Text = "Clear";
             this.clearUserFormButton.UseVisualStyleBackColor = true;
+            this.clearUserFormButton.Click += new System.EventHandler(this.clearUserFormButton_Click);
             // 
             // showTestGroupBox
             // 
             this.showTestGroupBox.Controls.Add(this.dataGridView7);
-            this.showTestGroupBox.Location = new System.Drawing.Point(255, 27);
+            this.showTestGroupBox.Location = new System.Drawing.Point(531, 387);
             this.showTestGroupBox.Name = "showTestGroupBox";
-            this.showTestGroupBox.Size = new System.Drawing.Size(72, 312);
+            this.showTestGroupBox.Size = new System.Drawing.Size(63, 312);
             this.showTestGroupBox.TabIndex = 3;
             this.showTestGroupBox.TabStop = false;
             this.showTestGroupBox.Text = "Test";
@@ -553,9 +563,9 @@ namespace TestServer
             // loadTestGroupBox
             // 
             this.loadTestGroupBox.Controls.Add(this.testGroupBox);
-            this.loadTestGroupBox.Location = new System.Drawing.Point(359, 27);
+            this.loadTestGroupBox.Location = new System.Drawing.Point(658, 390);
             this.loadTestGroupBox.Name = "loadTestGroupBox";
-            this.loadTestGroupBox.Size = new System.Drawing.Size(40, 312);
+            this.loadTestGroupBox.Size = new System.Drawing.Size(71, 312);
             this.loadTestGroupBox.TabIndex = 4;
             this.loadTestGroupBox.TabStop = false;
             this.loadTestGroupBox.Text = "Load";
@@ -570,9 +580,9 @@ namespace TestServer
             this.testGroupBox.Controls.Add(this.label8);
             this.testGroupBox.Controls.Add(this.textBox9);
             this.testGroupBox.Controls.Add(this.label9);
-            this.testGroupBox.Location = new System.Drawing.Point(16, 19);
+            this.testGroupBox.Location = new System.Drawing.Point(16, 49);
             this.testGroupBox.Name = "testGroupBox";
-            this.testGroupBox.Size = new System.Drawing.Size(243, 281);
+            this.testGroupBox.Size = new System.Drawing.Size(243, 251);
             this.testGroupBox.TabIndex = 2;
             this.testGroupBox.TabStop = false;
             this.testGroupBox.Text = "Test";
@@ -647,9 +657,9 @@ namespace TestServer
             // 
             this.testByGroupGroupBox.Controls.Add(this.comboBox3);
             this.testByGroupGroupBox.Controls.Add(this.dataGridView8);
-            this.testByGroupGroupBox.Location = new System.Drawing.Point(441, 40);
+            this.testByGroupGroupBox.Location = new System.Drawing.Point(790, 390);
             this.testByGroupGroupBox.Name = "testByGroupGroupBox";
-            this.testByGroupGroupBox.Size = new System.Drawing.Size(60, 312);
+            this.testByGroupGroupBox.Size = new System.Drawing.Size(81, 312);
             this.testByGroupGroupBox.TabIndex = 3;
             this.testByGroupGroupBox.TabStop = false;
             this.testByGroupGroupBox.Text = "Users";
@@ -661,6 +671,7 @@ namespace TestServer
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(545, 21);
             this.comboBox3.TabIndex = 1;
+            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
             // dataGridView8
             // 
@@ -672,13 +683,14 @@ namespace TestServer
             // 
             // assingTestGroupGroupBox
             // 
+            this.assingTestGroupGroupBox.Controls.Add(this.button4);
             this.assingTestGroupGroupBox.Controls.Add(this.label);
             this.assingTestGroupGroupBox.Controls.Add(this.dataGridView10);
             this.assingTestGroupGroupBox.Controls.Add(this.comboBox4);
             this.assingTestGroupGroupBox.Controls.Add(this.dataGridView9);
-            this.assingTestGroupGroupBox.Location = new System.Drawing.Point(538, 46);
+            this.assingTestGroupGroupBox.Location = new System.Drawing.Point(609, 27);
             this.assingTestGroupGroupBox.Name = "assingTestGroupGroupBox";
-            this.assingTestGroupGroupBox.Size = new System.Drawing.Size(90, 312);
+            this.assingTestGroupGroupBox.Size = new System.Drawing.Size(521, 316);
             this.assingTestGroupGroupBox.TabIndex = 4;
             this.assingTestGroupGroupBox.TabStop = false;
             this.assingTestGroupGroupBox.Text = "Users";
@@ -690,6 +702,7 @@ namespace TestServer
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(545, 21);
             this.comboBox4.TabIndex = 1;
+            this.comboBox4.SelectedIndexChanged += new System.EventHandler(this.comboBox4_SelectedIndexChanged);
             // 
             // dataGridView9
             // 
@@ -704,7 +717,7 @@ namespace TestServer
             this.dataGridView10.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView10.Location = new System.Drawing.Point(7, 173);
             this.dataGridView10.Name = "dataGridView10";
-            this.dataGridView10.Size = new System.Drawing.Size(546, 133);
+            this.dataGridView10.Size = new System.Drawing.Size(546, 111);
             this.dataGridView10.TabIndex = 2;
             // 
             // label
@@ -716,6 +729,26 @@ namespace TestServer
             this.label.TabIndex = 3;
             this.label.Text = "tests";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(373, 278);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(182, 23);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "Delete";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(6, 289);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 4;
+            this.button4.Text = "Add";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -723,12 +756,12 @@ namespace TestServer
             this.ClientSize = new System.Drawing.Size(1189, 594);
             this.Controls.Add(this.assingTestGroupGroupBox);
             this.Controls.Add(this.testByGroupGroupBox);
+            this.Controls.Add(this.addUserGroupgroupBox);
+            this.Controls.Add(this.userByGruopGroupBox);
             this.Controls.Add(this.loadTestGroupBox);
             this.Controls.Add(this.updateUserGroupBox);
             this.Controls.Add(this.showTestGroupBox);
             this.Controls.Add(this.showUserGroupBox);
-            this.Controls.Add(this.addUserGroupgroupBox);
-            this.Controls.Add(this.userByGruopGroupBox);
             this.Controls.Add(this.updateGroupGroupBox);
             this.Controls.Add(this.showGroupGroupBox);
             this.Controls.Add(this.menuStrip1);
@@ -796,7 +829,6 @@ namespace TestServer
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.DataGridView dataGridView3;
         private System.Windows.Forms.GroupBox addUserGroupgroupBox;
-        private System.Windows.Forms.Button removeUserByGroup;
         private System.Windows.Forms.Button addUserToGroup;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.DataGridView dataGridView4;
@@ -837,6 +869,8 @@ namespace TestServer
         private System.Windows.Forms.DataGridView dataGridView10;
         private System.Windows.Forms.ComboBox comboBox4;
         private System.Windows.Forms.DataGridView dataGridView9;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button4;
     }
 }
 

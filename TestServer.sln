@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DALServer", "DALServer\DALServer.csproj", "{64C3C4DE-C2E1-4C50-994D-0F9E1A0A303B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageServerClient", "MessageServerClient\MessageServerClient.csproj", "{35233575-AA0B-43E2-8225-CA828C0973D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{64C3C4DE-C2E1-4C50-994D-0F9E1A0A303B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64C3C4DE-C2E1-4C50-994D-0F9E1A0A303B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64C3C4DE-C2E1-4C50-994D-0F9E1A0A303B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35233575-AA0B-43E2-8225-CA828C0973D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35233575-AA0B-43E2-8225-CA828C0973D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35233575-AA0B-43E2-8225-CA828C0973D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35233575-AA0B-43E2-8225-CA828C0973D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

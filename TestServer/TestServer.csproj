@@ -87,6 +87,7 @@
     <Compile Include="FormStart.Designer.cs">
       <DependentUpon>FormStart.cs</DependentUpon>
     </Compile>
+    <Compile Include="Info.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -143,6 +144,10 @@
     <ProjectReference Include="..\DALServer\DALServer.csproj">
       <Project>{64c3c4de-c2e1-4c50-994d-0f9e1a0a303b}</Project>
       <Name>DALServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MessageServerClient\MessageServerClient.csproj">
+      <Project>{35233575-aa0b-43e2-8225-ca828c0973d6}</Project>
+      <Name>MessageServerClient</Name>
     </ProjectReference>
     <ProjectReference Include="..\Repository\Repository.csproj">
       <Project>{ff074615-e2b2-4791-a760-07d1704488c3}</Project>

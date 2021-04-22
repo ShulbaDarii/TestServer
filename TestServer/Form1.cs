@@ -1,4 +1,5 @@
 ﻿using DALServer;
+using MessageServerClient;
 using Repository;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,11 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -22,8 +27,11 @@ namespace TestServer
         Form form;
 
 
+        Socket listenSocket;
+        List<Thread> threads = new List<Thread>();
 
-
+        CancellationTokenSource tokenSource = new CancellationTokenSource();
+        List<Info> infos = new List<Info>();
 
         public Form1(Form form)
         {
@@ -32,7 +40,136 @@ namespace TestServer
             work = new GenericUnitOfWork(new ServerContext(ConfigurationManager.ConnectionStrings["conStr"].ConnectionString));
             dataGridView1.DataSource = work.Repository<Group>().GetAll();
             this.form = form;
+
+
+            listenSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            //Сервер завжди сідає на локал хост!!
+            IPHostEntry iPHostEntry = Dns.GetHostEntry("localhost");
+            IPAddress iPAddress = iPHostEntry.AddressList[1]; //[0] доступ до першої мережевої карти
+
+            //номер порта
+            int port = int.Parse(textBox1.Text);
+            //Створення сервера.
+            //Створення кінцеву точку
+
+            IPEndPoint iPEndPoint = new IPEndPoint(iPAddress, port);
+            //Призначення сокета bing
+            listenSocket.Bind(iPEndPoint);//сідає на конкретний порт
+            var token = tokenSource.Token;
+            Task.Factory.StartNew(() => ListenThread(listenSocket, token), token);
         }
+
+        private void ListenThread(Socket listenSocket, CancellationToken cancellationToken)
+        {
+            listenSocket.Listen(2);//2 к-сть одночасних слухань
+            while (true)//вічно слухати
+            {
+
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                }
+
+                Socket clientSocket = listenSocket.Accept(); //.Accept() - це блокуюча функцію
+                Info info = new Info() { RemoteEndPoint = clientSocket.RemoteEndPoint.ToString(), ClientSocket = clientSocket };
+                //добавляєм клієнтів які приєдналися до сервера
+                //listBox1.Invoke(new Action(() => listBox1.Items.Add(info)));
+                infos.Add(info);
+
+                //не нужен
+                //Читання повідомлення які надходить від клієнта
+                //foreach (Info inf in listBox1.Items)
+                //{
+                //    if (inf.RemoteEndPoint != info.RemoteEndPoint)
+                //    {
+                //        string msg = "ddldl." + info.RemoteEndPoint;
+                //        Byte[] sendByte = new byte[msg.Length];
+                //        sendByte = Encoding.ASCII.GetBytes(msg);
+                //        inf.ClientSocket.Send(sendByte);
+
+                //        string msg2 = "ddldl." + inf.RemoteEndPoint;
+                //        Byte[] sendByte2 = new byte[msg2.Length];
+                //        sendByte2 = Encoding.ASCII.GetBytes(msg2);
+                //        info.ClientSocket.Send(sendByte2);
+                //    }
+                //}
+
+                Thread receiveThread = new Thread(ReceiveThreadFunction);
+                threads.Add(receiveThread);
+                receiveThread.IsBackground = true; //фоновий потік коли програма закриєть потік не буде процювати
+                receiveThread.Start(info);
+
+
+            }
+        }
+
+        private void ReceiveThreadFunction(object sender)
+        {
+            while (true)//постійно читаєм( чекаєм на повідомлення клієнта)
+            {
+                Info info = sender as Info;
+                Socket receiveSocked = info.ClientSocket;
+                if (receiveSocked == null) throw new ArgumentException("Receive Socket Exception");
+                byte[] receivebyte = new byte[1024];
+                //Читання
+                Int32 nCount = receiveSocked.Receive(receivebyte);//Receive() -  блокуюча функція - чекає доки  буде повідомлення
+
+                MemoryStream ms = new MemoryStream(receivebyte);
+
+                BinaryFormatter bf = new BinaryFormatter();
+                Mess d = (Mess)bf.Deserialize(ms);
+
+                string dodo = d.type;
+                switch (dodo)
+                {
+                    case "join":
+                        MemoryStream mS = new MemoryStream(d.type);
+
+                        BinaryFormatter bf = new BinaryFormatter();
+                        Mess d = (Mess)bf.Deserialize(ms);
+                        break;
+                    default:
+                        break;
+                }
+
+                String receiceString = Encoding.ASCII.GetString(receivebyte, 0, nCount);
+                if (receiceString == "close")
+                {
+                   // listBox1.Invoke(new Action(() => listBox1.Items.Remove(info)));
+                    infos.Remove(info);
+
+                    //не нужен
+                    //foreach (Info inf in listBox1.Items)
+                    //{
+                    //    if (inf.RemoteEndPoint != info.RemoteEndPoint)
+                    //    {
+                    //        string newText = "delddld." + info.RemoteEndPoint;
+
+                    //        Byte[] sendByte = new byte[newText.Length];
+                    //        sendByte = Encoding.ASCII.GetBytes(newText);
+                    //        inf.ClientSocket.Send(sendByte);
+
+                    //    }
+                    //}
+                    break;
+                }
+                int abc = receiceString.IndexOf("ddld.");
+                //foreach (Info inf in infos)
+                //{
+                //    if (inf.RemoteEndPoint == receiceString.Substring(0, abc))
+                //    {
+                //        string newText = info.RemoteEndPoint + " : " + receiceString.Substring(abc + 5);
+
+                //        Byte[] sendByte = new byte[newText.Length];
+                //        sendByte = Encoding.ASCII.GetBytes(newText);
+                //        inf.ClientSocket.Send(sendByte);
+                //        break;
+                //    }
+                //}
+
+            }
+        }
+
         private void unVisableGroup()
         {
             addUserGroupgroupBox.Visible = false;

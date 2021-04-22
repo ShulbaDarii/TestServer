@@ -6,21 +6,27 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace TestServer
 {
     public partial class Form1 : Form
     {
         GenericUnitOfWork work;
-        public Form1()
+        Xml2CSharp.Test test;
+        Form form;
+        public Form1(Form form)
         {
             InitializeComponent();
             unVisableGroup();
             work = new GenericUnitOfWork(new ServerContext(ConfigurationManager.ConnectionStrings["conStr"].ConnectionString));
+            dataGridView1.DataSource = work.Repository<Group>().GetAll();
+            this.form = form;
         }
         private void unVisableGroup()
         {
@@ -31,8 +37,6 @@ namespace TestServer
             showTestGroupBox.Visible = false;
             showUserGroupBox.Visible = false;
             testByGroupGroupBox.Visible = false;
-            testGroupBox.Visible = false;
-           
             updateGroupGroupBox.Visible = false;
             updateUserGroupBox.Visible = false;
             userByGruopGroupBox.Visible = false;
@@ -123,7 +127,7 @@ namespace TestServer
 
         private void addGroupbButton_Click(object sender, EventArgs e)
         {
-            work.Repository<Group>().Add(new Group { NameGroup = textBox1.Text });
+            work.Repository<Group>().Add(new Group { NameGroup = textBox1.Text, Tests = new List<Test>(),Users=new List<User>() });
             dataGridView2.DataSource = work.Repository<Group>().GetAll();
         }
 
@@ -171,7 +175,7 @@ namespace TestServer
         {
             if (work.Repository<User>().FindAll(x => x.Login == textBox4.Text).FirstOrDefault() == null)
             {
-                work.Repository<User>().Add(new User { FirstName = textBox2.Text, LastName = textBox3.Text, IsAdmin = checkBox1.Checked, Login = textBox5.Text, Password = textBox4.Text });
+                work.Repository<User>().Add(new User { FirstName = textBox2.Text, LastName = textBox3.Text, IsAdmin = checkBox1.Checked, Login = textBox5.Text, Password = textBox4.Text,Groups=new List<Group>() });
             }else
 
                 MessageBox.Show("Login is allready used");
@@ -238,5 +242,66 @@ namespace TestServer
             }
             dataGridView9.DataSource = (comboBox4.SelectedItem as Group).Tests;
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            XmlSerializer formatter = new XmlSerializer(typeof(Xml2CSharp.Test));
+            if (openFileDialog1.ShowDialog() == DialogResult.Cancel)
+                return;
+            // получаем выбранный файл
+            string filename = openFileDialog1.FileName;
+            using (FileStream fs = new FileStream(filename, FileMode.OpenOrCreate))
+            {
+                test = (Xml2CSharp.Test)formatter.Deserialize(fs);
+            }
+            textBox8.Text = test.TestName;
+            textBox9.Text = test.Author;
+            textBox7.Text = test.Qty_questions;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            textBox8.Text = "";
+            textBox9.Text = "";
+            textBox7.Text = "";
+            test = null;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Test test1 = new Test();
+            test1.Author = textBox9.Text;
+            test1.Title = textBox8.Text;
+            test1.Time = new TimeSpan((int)numericUpDown1.Value, (int)numericUpDown2.Value, 0);
+            List<Question> questions = new List<Question>();
+            foreach(var quest in test.Question)
+            {
+                Question question = new Question();
+                question.Title = quest.Description;
+                question.Difficulty = Convert.ToInt32(quest.Difficulty);
+                List<Answer> answers = new List<Answer>();
+                foreach(var answ in quest.Answer)
+                {
+                    Answer answer = new Answer();
+                    answer.Description = answ.Description;
+                    if (answ.IsRight == "True")
+                    {
+                        answer.IsRight = true;
+                    }
+                    else
+                        answer.IsRight = false;
+                    answers.Add(answer);
+                }
+                question.Answers = answers;
+                questions.Add(question);
+            }
+
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            form.Close();
+        }
+
     }
 }

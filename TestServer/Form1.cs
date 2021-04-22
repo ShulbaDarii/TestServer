@@ -20,6 +20,11 @@ namespace TestServer
         GenericUnitOfWork work;
         Xml2CSharp.Test test;
         Form form;
+
+
+
+
+
         public Form1(Form form)
         {
             InitializeComponent();
@@ -319,6 +324,7 @@ namespace TestServer
         {
             form.Close();
         }
+
 
     }
 }

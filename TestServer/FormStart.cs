@@ -21,27 +21,36 @@ namespace TestServer
             InitializeComponent();
             work = new GenericUnitOfWork(new ServerContext(ConfigurationManager.ConnectionStrings["conStr"].ConnectionString));
             work.Repository<User>().GetAll();
+            textBox1.Text = "admin";
+            textBox2.Text = "password";
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            User us=work.Repository<User>().FindAll(x => x.Login == textBox1.Text).FirstOrDefault();
-            if (us.IsAdmin)
+            if (work.Repository<User>().FindAll(x => x.Login == textBox1.Text).FirstOrDefault() != default)
             {
-                if (us.Password == textBox2.Text)
+                User us = work.Repository<User>().FindAll(x => x.Login == textBox1.Text).FirstOrDefault();
+                if (us.IsAdmin)
                 {
-                    Form1 form = new Form1(this);
-                    form.Show();
-                    Visible = false;
+                    if (us.Password == textBox2.Text)
+                    {
+                        Form1 form = new Form1(this);
+                        form.Show();
+                        Visible = false;
+                    }
+                    else
+                    {
+                        MessageBox.Show("wrong password");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("wrong password");
+                    MessageBox.Show("You are not admin");
                 }
             }
             else
             {
-                MessageBox.Show("You are not admin");
+                MessageBox.Show("login not found");
             }
         }
 

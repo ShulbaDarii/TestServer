@@ -779,28 +779,28 @@ namespace TestServer
             // showTestToolStripMenuItem
             // 
             this.showTestToolStripMenuItem.Name = "showTestToolStripMenuItem";
-            this.showTestToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.showTestToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.showTestToolStripMenuItem.Text = "Show";
             this.showTestToolStripMenuItem.Click += new System.EventHandler(this.showTestToolStripMenuItem_Click);
             // 
             // loadTestToolStripMenuItem
             // 
             this.loadTestToolStripMenuItem.Name = "loadTestToolStripMenuItem";
-            this.loadTestToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.loadTestToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.loadTestToolStripMenuItem.Text = "Load test";
             this.loadTestToolStripMenuItem.Click += new System.EventHandler(this.loadTestToolStripMenuItem_Click);
             // 
             // asignesTestToolStripMenuItem
             // 
             this.asignesTestToolStripMenuItem.Name = "asignesTestToolStripMenuItem";
-            this.asignesTestToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.asignesTestToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.asignesTestToolStripMenuItem.Text = "Asignes test";
             this.asignesTestToolStripMenuItem.Click += new System.EventHandler(this.asignesTestToolStripMenuItem_Click);
             // 
             // showTestOfGroupToolStripMenuItem
             // 
             this.showTestOfGroupToolStripMenuItem.Name = "showTestOfGroupToolStripMenuItem";
-            this.showTestOfGroupToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.showTestOfGroupToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.showTestOfGroupToolStripMenuItem.Text = "Show test of group";
             this.showTestOfGroupToolStripMenuItem.Click += new System.EventHandler(this.showTestOfGroupToolStripMenuItem_Click);
             // 
@@ -812,7 +812,7 @@ namespace TestServer
             this.toolStripMenuItem3});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(643, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(642, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -824,7 +824,7 @@ namespace TestServer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(643, 362);
+            this.ClientSize = new System.Drawing.Size(642, 363);
             this.Controls.Add(this.assingTestGroupGroupBox);
             this.Controls.Add(this.testByGroupGroupBox);
             this.Controls.Add(this.addUserGroupgroupBox);

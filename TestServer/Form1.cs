@@ -105,24 +105,25 @@ namespace TestServer
             unVisableGroup();
             loadTestGroupBox.Visible = true;
             dataGridView10.DataSource = work.Repository<Test>().GetAll();
-            comboBox4.Items.Clear();
-            foreach (Group group in work.Repository<Group>().GetAll())
-                comboBox4.Items.Add(group);
         }
 
         private void asignesTestToolStripMenuItem_Click(object sender, EventArgs e)
         {
             unVisableGroup();
             assingTestGroupGroupBox.Visible = true;
-            comboBox3.Items.Clear();
+            comboBox4.Items.Clear();
             foreach (Group group in work.Repository<Group>().GetAll())
-                comboBox3.Items.Add(group);
+                comboBox4.Items.Add(group);
+            dataGridView10.DataSource = work.Repository<Test>().GetAll();
         }
 
         private void showTestOfGroupToolStripMenuItem_Click(object sender, EventArgs e)
         {
             unVisableGroup();
             testByGroupGroupBox.Visible = true;
+            comboBox3.Items.Clear();
+            foreach (Group group in work.Repository<Group>().GetAll())
+               comboBox3.Items.Add(group);
         }
 
         private void addGroupbButton_Click(object sender, EventArgs e)
@@ -142,11 +143,18 @@ namespace TestServer
 
         private void addUserToGroup_Click(object sender, EventArgs e)
         {
-            foreach (DataGridViewRow s in dataGridView4.SelectedRows)
+            try
             {
-                (comboBox2.SelectedItem as Group).Users.Add(work.Repository<User>().FindById(s.Cells[0].Value));
+                foreach (DataGridViewRow s in dataGridView4.SelectedRows)
+                {
+                    (comboBox2.SelectedItem as Group).Users.Add(work.Repository<User>().FindById(s.Cells[0].Value));
+                }
+                work.Repository<Group>().Update((comboBox2.SelectedItem as Group));
             }
-            work.Repository<Group>().Update((comboBox2.SelectedItem as Group));
+            catch
+            {
+                MessageBox.Show("user already in group");
+            }
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -190,8 +198,8 @@ namespace TestServer
                 user.FirstName = textBox2.Text;
                 user.LastName = textBox3.Text;
                 user.IsAdmin = checkBox1.Checked;
-                user.Login = textBox4.Text;
-                user.Password = textBox5.Text;
+                user.Login = textBox5.Text;
+                user.Password = textBox4.Text;
                 work.Repository<User>().Update(user);
             }
             else
@@ -236,11 +244,20 @@ namespace TestServer
 
         private void button4_Click(object sender, EventArgs e)
         {
-            foreach (DataGridViewRow s in dataGridView10.SelectedRows)
+            try
             {
-                (comboBox4.SelectedItem as Group).Tests.Add(work.Repository<Test>().FindById(s.Cells[0].Value));
+                foreach (DataGridViewRow s in dataGridView10.SelectedRows)
+                {
+                    (comboBox3.SelectedItem as Group).Tests.Add(work.Repository<Test>().FindById(s.Cells[0].Value));
+                }
+                work.Repository<Group>().Update(comboBox4.SelectedItem as Group);
+                dataGridView9.DataSource = null;
+                dataGridView9.DataSource = (comboBox4.SelectedItem as Group).Tests;
             }
-            dataGridView9.DataSource = (comboBox4.SelectedItem as Group).Tests;
+            catch
+            {
+                MessageBox.Show("someone test already used");
+            }
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -248,7 +265,6 @@ namespace TestServer
             XmlSerializer formatter = new XmlSerializer(typeof(Xml2CSharp.Test));
             if (openFileDialog1.ShowDialog() == DialogResult.Cancel)
                 return;
-            // получаем выбранный файл
             string filename = openFileDialog1.FileName;
             using (FileStream fs = new FileStream(filename, FileMode.OpenOrCreate))
             {
@@ -295,7 +311,8 @@ namespace TestServer
                 question.Answers = answers;
                 questions.Add(question);
             }
-
+            work.Repository<Test>().Add(test1);
+            MessageBox.Show("Add");
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)

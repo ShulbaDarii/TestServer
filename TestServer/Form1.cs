@@ -48,7 +48,7 @@ namespace TestServer
             IPAddress iPAddress = iPHostEntry.AddressList[1]; //[0] доступ до першої мережевої карти
 
             //номер порта
-            int port = int.Parse(textBox1.Text);
+            int port = 33333;
             //Створення сервера.
             //Створення кінцеву точку
 
@@ -105,73 +105,181 @@ namespace TestServer
 
         private void ReceiveThreadFunction(object sender)
         {
-            while (true)//постійно читаєм( чекаєм на повідомлення клієнта)
+            try
+            {
+                while (true)//постійно читаєм( чекаєм на повідомлення клієнта)
             {
                 Info info = sender as Info;
                 Socket receiveSocked = info.ClientSocket;
                 if (receiveSocked == null) throw new ArgumentException("Receive Socket Exception");
-                byte[] receivebyte = new byte[1024];
+                byte[] receivebyte = new byte[2048];
                 //Читання
+
                 Int32 nCount = receiveSocked.Receive(receivebyte);//Receive() -  блокуюча функція - чекає доки  буде повідомлення
 
                 MemoryStream ms = new MemoryStream(receivebyte);
-
                 BinaryFormatter bf = new BinaryFormatter();
                 Mess d = (Mess)bf.Deserialize(ms);
-
-                string dodo = d.type;
-                switch (dodo)
+                byte[] infooo = d.info;
+                string type = "";
+                Byte[] mess=new byte[5];
+                int id = 0;
+                    bool skip = false;
+                switch (d.type)
                 {
                     case "join":
-                        MemoryStream mS = new MemoryStream(d.type);
+                        MemoryStream mS = new MemoryStream(infooo);
 
-                        BinaryFormatter bf = new BinaryFormatter();
-                        Mess d = (Mess)bf.Deserialize(ms);
+                        BinaryFormatter bF = new BinaryFormatter();
+                        User user = (User)bF.Deserialize(mS);
+
+                        User user1 =work.Repository<User>().FindAll(x => x.Login == user.Login).FirstOrDefault();
+                        if (user1 != default)
+                        {
+                            if (user1.Password == user.Password)
+                            {
+                                type = "join";
+
+                                //string newText = user1.Id.ToString();
+
+                                //mess = new byte[newText.Length];
+                                //mess = Encoding.ASCII.GetBytes(newText);
+
+                                id = user1.Id;
+                            }
+                            else
+                            {
+                                type = "join";
+
+                                string newText = "wrong password";
+
+                                mess = new byte[newText.Length];
+                                mess = Encoding.ASCII.GetBytes(newText);
+                            }
+                        }
+                        else
+                        {
+                            type = "join";
+
+                            string newText = "user not found";
+
+                            mess = new byte[newText.Length];
+                            mess = Encoding.ASCII.GetBytes(newText);
+                        }
+                        break;
+                    case "Tests":
+                        type = "Tests";
+                        ICollection<Test> tests = new List<Test>();
+                        User u = work.Repository<User>().FindById(d.id);
+                        foreach(Test test in work.Repository<Test>().GetAll())
+                        {
+                            foreach(Group group in test.Groups)
+                            {
+                                foreach (Group groupUser in u.Groups)
+                                {
+                                    if(group==groupUser&&!tests.Contains(test))
+                                    {
+                                        tests.Add(test);
+                                    }
+                                }
+
+                            }
+                        }
+                        List<TestDLL.Test> tests1 = new List<TestDLL.Test>();
+                        foreach(Test test1 in tests)
+                        {
+                            TestDLL.Test t = new TestDLL.Test();
+                            t.Title = test1.Title;
+                            t.Time = test1.Time;
+                            t.Author = test1.Author;
+                            t.Id = test1.Id;
+                            foreach(Question question in test1.Questions)
+                            {
+                                TestDLL.Question question1 = new TestDLL.Question();
+                                question1.Difficulty = question.Difficulty;
+                                question1.Title = question.Title;                               
+                                foreach(Answer answer in question.Answers)
+                                {
+                                    TestDLL.Answer answer1 = new TestDLL.Answer();
+                                    answer1.Description = answer.Description;
+                                    answer1.IsRight = answer.IsRight;
+                                    question1.Answers.Add(answer1);                                   
+                                }
+                                t.Questions.Add(question1);
+                            }
+                            tests1.Add(t);
+                        }
+
+
+
+                        BinaryFormatter binary = new BinaryFormatter();
+
+                        MemoryStream stream = new MemoryStream();
+                        binary.Serialize(stream, tests1);
+
+                        mess = stream.ToArray();
+                        break;
+                    case "result":
+                        MemoryStream mSS = new MemoryStream(infooo);
+
+                        BinaryFormatter bFF = new BinaryFormatter();
+                        TestDLL.Result res = (TestDLL.Result)bFF.Deserialize(mSS);
+                        Result result = new Result();
+                            result.User = work.Repository<User>().FindById(d.id);
+                            result.Mark = res.Mark;
+                            result.QtyOfRightAnswers = res.QtyOfRightAnswers;
+                            result.Date = DateTime.Now;
+                            result.Test = work.Repository<Test>().FindAll(x => x.Title == res.NameTest).FirstOrDefault();
+                        work.Repository<Result>().Add(result);
+                            skip = true;
+                        break;
+                    case "passes":
+
+                            type = "passes";
+                            List<TestDLL.Result> results = new List<TestDLL.Result>();
+                            foreach (var it in work.Repository<Result>().GetAll())
+                            {
+                                if (work.Repository<User>().FindById(d.id) == it.User)
+                                {
+                                    results.Add(new TestDLL.Result() { NameTest = it.Test.Title, Date = it.Date, Mark = it.Mark,QtyOfRightAnswers=it.QtyOfRightAnswers }) ;
+                                }
+                            }
+                        BinaryFormatter b = new BinaryFormatter();
+
+                        MemoryStream s = new MemoryStream();
+                        bf.Serialize(s, results);
+
+                        mess = s.ToArray();
                         break;
                     default:
                         break;
                 }
 
-                String receiceString = Encoding.ASCII.GetString(receivebyte, 0, nCount);
-                if (receiceString == "close")
-                {
-                   // listBox1.Invoke(new Action(() => listBox1.Items.Remove(info)));
-                    infos.Remove(info);
+                    if (!skip)
+                    {
+                        Mess m = new Mess();
+                        m.type = type;
+                        m.id = id;
+                        m.info = mess;
 
-                    //не нужен
-                    //foreach (Info inf in listBox1.Items)
-                    //{
-                    //    if (inf.RemoteEndPoint != info.RemoteEndPoint)
-                    //    {
-                    //        string newText = "delddld." + info.RemoteEndPoint;
 
-                    //        Byte[] sendByte = new byte[newText.Length];
-                    //        sendByte = Encoding.ASCII.GetBytes(newText);
-                    //        inf.ClientSocket.Send(sendByte);
+                        MemoryStream memoryStream = new MemoryStream();
+                        bf.Serialize(memoryStream, m);
 
-                    //    }
-                    //}
-                    break;
-                }
-                int abc = receiceString.IndexOf("ddld.");
-                //foreach (Info inf in infos)
-                //{
-                //    if (inf.RemoteEndPoint == receiceString.Substring(0, abc))
-                //    {
-                //        string newText = info.RemoteEndPoint + " : " + receiceString.Substring(abc + 5);
-
-                //        Byte[] sendByte = new byte[newText.Length];
-                //        sendByte = Encoding.ASCII.GetBytes(newText);
-                //        inf.ClientSocket.Send(sendByte);
-                //        break;
-                //    }
-                //}
+                        byte[] sendData = memoryStream.ToArray();
+                        info.ClientSocket.Send(sendData);
+                    }
+            }
+            }
+            catch
+            {
 
             }
         }
 
         private void unVisableGroup()
         {
+            groupBox1.Visible = false;
             addUserGroupgroupBox.Visible = false;
             assingTestGroupGroupBox.Visible = false;
             loadTestGroupBox.Visible = false;
@@ -188,7 +296,6 @@ namespace TestServer
             unVisableGroup();
             showGroupGroupBox.Visible = true;
             dataGridView1.DataSource = work.Repository<Group>().GetAll();
-            //dataGridView1.Columns.Add(new DataGridViewColumn() { Name = "qty of test" });
 
         }
 
@@ -289,13 +396,15 @@ namespace TestServer
             {
                 foreach (DataGridViewRow s in dataGridView4.SelectedRows)
                 {
-                    (comboBox2.SelectedItem as Group).Users.Add(work.Repository<User>().FindById(s.Cells[0].Value));
+                   if( !(comboBox2.SelectedItem as Group).Users.Contains(work.Repository<User>().FindById(s.Cells[0].Value)))
+                      (comboBox2.SelectedItem as Group).Users.Add(work.Repository<User>().FindById(s.Cells[0].Value));
+                   else
+                        MessageBox.Show("user already in group");
                 }
                 work.Repository<Group>().Update((comboBox2.SelectedItem as Group));
             }
             catch
             {
-                MessageBox.Show("user already in group");
             }
         }
 
@@ -390,7 +499,12 @@ namespace TestServer
             {
                 foreach (DataGridViewRow s in dataGridView10.SelectedRows)
                 {
-                    (comboBox3.SelectedItem as Group).Tests.Add(work.Repository<Test>().FindById(s.Cells[0].Value));
+                    if(!(comboBox4.SelectedItem as Group).Tests.Contains(work.Repository<Test>().FindById(s.Cells[0].Value)))
+                        (comboBox4.SelectedItem as Group).Tests.Add(work.Repository<Test>().FindById(s.Cells[0].Value));
+                    else
+                    {
+                        MessageBox.Show("test alreade asing");
+                    }
                 }
                 work.Repository<Group>().Update(comboBox4.SelectedItem as Group);
                 dataGridView9.DataSource = null;
@@ -398,7 +512,7 @@ namespace TestServer
             }
             catch
             {
-                MessageBox.Show("someone test already used");
+                
             }
         }
 
@@ -432,6 +546,7 @@ namespace TestServer
             test1.Title = textBox8.Text;
             test1.Time = new TimeSpan((int)numericUpDown1.Value, (int)numericUpDown2.Value, 0);
             List<Question> questions = new List<Question>();
+            
             foreach(var quest in test.Question)
             {
                 Question question = new Question();
@@ -453,6 +568,7 @@ namespace TestServer
                 question.Answers = answers;
                 questions.Add(question);
             }
+            test1.Questions = questions;
             work.Repository<Test>().Add(test1);
             MessageBox.Show("Add");
         }
@@ -462,6 +578,42 @@ namespace TestServer
             form.Close();
         }
 
+        private void resultToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            unVisableGroup();
+            groupBox1.Visible = true;
+            dataGridView1.DataSource = work.Repository<Group>().GetAll();
+            foreach (var f in work.Repository<User>().GetAll())
+                comboBox5.Items.Add(f);
+        }
 
+        private void comboBox5_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            List<Result> results = new List<Result>();
+            foreach(var it in work.Repository<Result>().GetAll())
+            {
+                if ((comboBox5.SelectedItem as User) == it.User)
+                    results.Add(it);
+            }
+            dataGridView11.DataSource= results;
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                foreach (DataGridViewRow s in dataGridView3.SelectedRows)
+                {
+                    (comboBox1.SelectedItem as Group).Users.Remove(work.Repository<User>().FindById(s.Cells[0].Value));
+                    work.Repository<Group>().Update((comboBox1.SelectedItem as Group));
+                }
+                dataGridView3.DataSource = null;
+                dataGridView3.DataSource = (comboBox1.SelectedItem as Group).Users;
+            }
+            catch
+            { 
+            }
+
+        }
     }
 }

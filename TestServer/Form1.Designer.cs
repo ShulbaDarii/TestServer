@@ -103,6 +103,11 @@ namespace TestServer
             this.showTestOfGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.dataGridView11 = new System.Windows.Forms.DataGridView();
+            this.comboBox5 = new System.Windows.Forms.ComboBox();
+            this.resultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button6 = new System.Windows.Forms.Button();
             this.showGroupGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.updateGroupGroupBox.SuspendLayout();
@@ -128,6 +133,8 @@ namespace TestServer
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView9)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView11)).BeginInit();
             this.SuspendLayout();
             // 
             // showGroupGroupBox
@@ -208,6 +215,7 @@ namespace TestServer
             // 
             // userByGruopGroupBox
             // 
+            this.userByGruopGroupBox.Controls.Add(this.button6);
             this.userByGruopGroupBox.Controls.Add(this.comboBox1);
             this.userByGruopGroupBox.Controls.Add(this.dataGridView3);
             this.userByGruopGroupBox.Location = new System.Drawing.Point(10, 30);
@@ -215,7 +223,7 @@ namespace TestServer
             this.userByGruopGroupBox.Size = new System.Drawing.Size(630, 330);
             this.userByGruopGroupBox.TabIndex = 2;
             this.userByGruopGroupBox.TabStop = false;
-            this.userByGruopGroupBox.Text = "Users";
+            this.userByGruopGroupBox.Text = "Users in groups";
             // 
             // comboBox1
             // 
@@ -231,7 +239,7 @@ namespace TestServer
             this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView3.Location = new System.Drawing.Point(6, 46);
             this.dataGridView3.Name = "dataGridView3";
-            this.dataGridView3.Size = new System.Drawing.Size(546, 260);
+            this.dataGridView3.Size = new System.Drawing.Size(546, 232);
             this.dataGridView3.TabIndex = 0;
             // 
             // addUserGroupgroupBox
@@ -244,7 +252,7 @@ namespace TestServer
             this.addUserGroupgroupBox.Size = new System.Drawing.Size(630, 330);
             this.addUserGroupgroupBox.TabIndex = 3;
             this.addUserGroupgroupBox.TabStop = false;
-            this.addUserGroupgroupBox.Text = "Users";
+            this.addUserGroupgroupBox.Text = "Users in group";
             // 
             // addUserToGroup
             // 
@@ -626,7 +634,7 @@ namespace TestServer
             this.testByGroupGroupBox.Size = new System.Drawing.Size(630, 330);
             this.testByGroupGroupBox.TabIndex = 3;
             this.testByGroupGroupBox.TabStop = false;
-            this.testByGroupGroupBox.Text = "Users";
+            this.testByGroupGroupBox.Text = "Test for group";
             // 
             // comboBox3
             // 
@@ -657,7 +665,7 @@ namespace TestServer
             this.assingTestGroupGroupBox.Size = new System.Drawing.Size(630, 330);
             this.assingTestGroupGroupBox.TabIndex = 4;
             this.assingTestGroupGroupBox.TabStop = false;
-            this.assingTestGroupGroupBox.Text = "Users";
+            this.assingTestGroupGroupBox.Text = "Assing test for group";
             // 
             // button4
             // 
@@ -746,7 +754,8 @@ namespace TestServer
             // 
             this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showUserToolStripMenuItem,
-            this.updateUserToolStripMenuItem});
+            this.updateUserToolStripMenuItem,
+            this.resultToolStripMenuItem});
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(42, 20);
             this.toolStripMenuItem2.Text = "User";
@@ -779,28 +788,28 @@ namespace TestServer
             // showTestToolStripMenuItem
             // 
             this.showTestToolStripMenuItem.Name = "showTestToolStripMenuItem";
-            this.showTestToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showTestToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.showTestToolStripMenuItem.Text = "Show";
             this.showTestToolStripMenuItem.Click += new System.EventHandler(this.showTestToolStripMenuItem_Click);
             // 
             // loadTestToolStripMenuItem
             // 
             this.loadTestToolStripMenuItem.Name = "loadTestToolStripMenuItem";
-            this.loadTestToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loadTestToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.loadTestToolStripMenuItem.Text = "Load test";
             this.loadTestToolStripMenuItem.Click += new System.EventHandler(this.loadTestToolStripMenuItem_Click);
             // 
             // asignesTestToolStripMenuItem
             // 
             this.asignesTestToolStripMenuItem.Name = "asignesTestToolStripMenuItem";
-            this.asignesTestToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.asignesTestToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.asignesTestToolStripMenuItem.Text = "Asignes test";
             this.asignesTestToolStripMenuItem.Click += new System.EventHandler(this.asignesTestToolStripMenuItem_Click);
             // 
             // showTestOfGroupToolStripMenuItem
             // 
             this.showTestOfGroupToolStripMenuItem.Name = "showTestOfGroupToolStripMenuItem";
-            this.showTestOfGroupToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showTestOfGroupToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.showTestOfGroupToolStripMenuItem.Text = "Show test of group";
             this.showTestOfGroupToolStripMenuItem.Click += new System.EventHandler(this.showTestOfGroupToolStripMenuItem_Click);
             // 
@@ -812,7 +821,7 @@ namespace TestServer
             this.toolStripMenuItem3});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(642, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(644, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -820,14 +829,60 @@ namespace TestServer
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.dataGridView11);
+            this.groupBox1.Controls.Add(this.comboBox5);
+            this.groupBox1.Location = new System.Drawing.Point(10, 30);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(630, 330);
+            this.groupBox1.TabIndex = 5;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Result test";
+            // 
+            // dataGridView11
+            // 
+            this.dataGridView11.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView11.Location = new System.Drawing.Point(7, 49);
+            this.dataGridView11.Name = "dataGridView11";
+            this.dataGridView11.Size = new System.Drawing.Size(546, 275);
+            this.dataGridView11.TabIndex = 2;
+            // 
+            // comboBox5
+            // 
+            this.comboBox5.FormattingEnabled = true;
+            this.comboBox5.Location = new System.Drawing.Point(7, 19);
+            this.comboBox5.Name = "comboBox5";
+            this.comboBox5.Size = new System.Drawing.Size(545, 21);
+            this.comboBox5.TabIndex = 1;
+            this.comboBox5.SelectedIndexChanged += new System.EventHandler(this.comboBox5_SelectedIndexChanged);
+            // 
+            // resultToolStripMenuItem
+            // 
+            this.resultToolStripMenuItem.Name = "resultToolStripMenuItem";
+            this.resultToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.resultToolStripMenuItem.Text = "Result";
+            this.resultToolStripMenuItem.Click += new System.EventHandler(this.resultToolStripMenuItem_Click);
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(7, 280);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(75, 23);
+            this.button6.TabIndex = 3;
+            this.button6.Text = "remove";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(642, 363);
+            this.ClientSize = new System.Drawing.Size(644, 363);
             this.Controls.Add(this.assingTestGroupGroupBox);
-            this.Controls.Add(this.testByGroupGroupBox);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.addUserGroupgroupBox);
+            this.Controls.Add(this.testByGroupGroupBox);
             this.Controls.Add(this.userByGruopGroupBox);
             this.Controls.Add(this.loadTestGroupBox);
             this.Controls.Add(this.updateUserGroupBox);
@@ -870,6 +925,8 @@ namespace TestServer
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView9)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView11)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -950,6 +1007,11 @@ namespace TestServer
         private System.Windows.Forms.NumericUpDown numericUpDown2;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.ToolStripMenuItem resultToolStripMenuItem;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.DataGridView dataGridView11;
+        private System.Windows.Forms.ComboBox comboBox5;
+        private System.Windows.Forms.Button button6;
     }
 }
 

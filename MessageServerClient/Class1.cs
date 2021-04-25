@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace MessageServerClient
 {
+    [Serializable]
     public class Mess
     {
         public string type { get; set; }
+        public int id { get; set; }
         public Byte[] info { get; set; }
 
     }

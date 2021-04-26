@@ -47,22 +47,21 @@ namespace TestServer
             IPHostEntry iPHostEntry = Dns.GetHostEntry("localhost");
             IPAddress iPAddress = iPHostEntry.AddressList[1]; //[0] доступ до першої мережевої карти
 
-            //номер порта
+
             int port = 33333;
-            //Створення сервера.
-            //Створення кінцеву точку
+
 
             IPEndPoint iPEndPoint = new IPEndPoint(iPAddress, port);
-            //Призначення сокета bing
-            listenSocket.Bind(iPEndPoint);//сідає на конкретний порт
+
+            listenSocket.Bind(iPEndPoint);
             var token = tokenSource.Token;
             Task.Factory.StartNew(() => ListenThread(listenSocket, token), token);
         }
 
         private void ListenThread(Socket listenSocket, CancellationToken cancellationToken)
         {
-            listenSocket.Listen(2);//2 к-сть одночасних слухань
-            while (true)//вічно слухати
+            listenSocket.Listen(2);
+            while (true)
             {
 
                 if (cancellationToken.IsCancellationRequested)
@@ -72,31 +71,14 @@ namespace TestServer
 
                 Socket clientSocket = listenSocket.Accept(); //.Accept() - це блокуюча функцію
                 Info info = new Info() { RemoteEndPoint = clientSocket.RemoteEndPoint.ToString(), ClientSocket = clientSocket };
-                //добавляєм клієнтів які приєдналися до сервера
-                //listBox1.Invoke(new Action(() => listBox1.Items.Add(info)));
+
                 infos.Add(info);
 
-                //не нужен
-                //Читання повідомлення які надходить від клієнта
-                //foreach (Info inf in listBox1.Items)
-                //{
-                //    if (inf.RemoteEndPoint != info.RemoteEndPoint)
-                //    {
-                //        string msg = "ddldl." + info.RemoteEndPoint;
-                //        Byte[] sendByte = new byte[msg.Length];
-                //        sendByte = Encoding.ASCII.GetBytes(msg);
-                //        inf.ClientSocket.Send(sendByte);
 
-                //        string msg2 = "ddldl." + inf.RemoteEndPoint;
-                //        Byte[] sendByte2 = new byte[msg2.Length];
-                //        sendByte2 = Encoding.ASCII.GetBytes(msg2);
-                //        info.ClientSocket.Send(sendByte2);
-                //    }
-                //}
 
                 Thread receiveThread = new Thread(ReceiveThreadFunction);
                 threads.Add(receiveThread);
-                receiveThread.IsBackground = true; //фоновий потік коли програма закриєть потік не буде процювати
+                receiveThread.IsBackground = true; 
                 receiveThread.Start(info);
 
 
@@ -107,13 +89,12 @@ namespace TestServer
         {
             try
             {
-                while (true)//постійно читаєм( чекаєм на повідомлення клієнта)
+                while (true)
             {
                 Info info = sender as Info;
                 Socket receiveSocked = info.ClientSocket;
                 if (receiveSocked == null) throw new ArgumentException("Receive Socket Exception");
                 byte[] receivebyte = new byte[2048];
-                //Читання
 
                 Int32 nCount = receiveSocked.Receive(receivebyte);//Receive() -  блокуюча функція - чекає доки  буде повідомлення
 
@@ -139,11 +120,6 @@ namespace TestServer
                             if (user1.Password == user.Password)
                             {
                                 type = "join";
-
-                                //string newText = user1.Id.ToString();
-
-                                //mess = new byte[newText.Length];
-                                //mess = Encoding.ASCII.GetBytes(newText);
 
                                 id = user1.Id;
                             }
